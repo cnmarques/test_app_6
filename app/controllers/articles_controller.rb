@@ -13,6 +13,12 @@ class ArticlesController < ApplicationController
       @article = Article.new
     end
 
+    def edit
+        @article =  Article.find(params[:id])
+    end
+
+
+
     def create
       @article = Article.new(params.require(:article).permit(:title, :description))
       if @article.save
@@ -24,4 +30,14 @@ class ArticlesController < ApplicationController
       end
     end
 
+    def update
+        @article = Article.find(params[:id])
+        if @article.update(params.require(:article).permit(:title, :description))
+          flash[:notice] = "Article updated successfully!"
+          redirect_to @article#_path(@article)
+          #render plain: @article.inspect
+        else
+          render 'edit'
+        end   
+    end
 end
